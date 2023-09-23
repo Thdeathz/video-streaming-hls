@@ -6,10 +6,12 @@ import RequireAuth from './features/auth/components/RequireAuth'
 import Login from './features/auth/Login'
 import Signup from './features/auth/Signup'
 import ForgotPassword from './features/auth/ForgotPassword'
-import Welcome from './features/users/Welcome'
+// import Welcome from './features/users/Welcome'
 import ResetPassword from './features/auth/ResetPassword'
 import VerifyOTP from './features/auth/VerifyOTP'
 import Upload from './features/videos/Upload'
+import Videos from './features/videos/Videos'
+import Video from './features/videos/Video'
 
 function App() {
   return (
@@ -26,8 +28,9 @@ function App() {
         {/* PRIVATE ROUTES */}
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
-            <Route path="/" element={<Welcome />} />
+            <Route path="/" element={<Videos />} />
             <Route path="/upload" element={<Upload />} />
+            <Route path="/:videoId" element={<Video />} />
           </Route>
         </Route>
       </Route>

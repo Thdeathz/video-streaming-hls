@@ -2,10 +2,12 @@ import React, { ChangeEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ReactPlayer from 'react-player'
 import { Button } from 'antd'
-import { ArrowLeftOutlined, CloudUploadOutlined } from '@ant-design/icons'
+import { CloudUploadOutlined, LoadingOutlined } from '@ant-design/icons'
 import { motion } from 'framer-motion'
 
 import { DefaultLayout } from '~/components'
+import ButtonBack from '~/components/ButtonBack'
+import { useUploadVideoMutation } from './store/videosApiSlice'
 
 const variants = {
   hidden: { opacity: 0, y: 10 },
@@ -20,6 +22,7 @@ const variants = {
 const Upload = () => {
   const navigate = useNavigate()
   const [file, setFile] = useState<FileFreview | null>(null)
+  const [uploadVideo, { isLoading }] = useUploadVideoMutation()
 
   const handleChangeInputFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return
@@ -31,17 +34,27 @@ const Upload = () => {
     setFile(preview)
   }
 
+  const onFinish = async () => {
+    if (!file) return
+
+    try {
+      const formData = new FormData()
+      formData.append('video', file)
+
+      await uploadVideo(formData)
+
+      setFile(null)
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <DefaultLayout>
       <div className="flex w-[75vw] flex-col items-start justify-start">
         <div className="flex w-full items-center justify-between">
-          <button
-            className="flex-center gap-2 transition-colors hover:text-primary-5"
-            onClick={() => navigate(-1)}
-          >
-            <ArrowLeftOutlined />
-            Back
-          </button>
+          <ButtonBack />
 
           <span className="text-xl font-medium">Upload video</span>
         </div>
@@ -50,7 +63,7 @@ const Upload = () => {
           <input
             className="h-upload-video w-full cursor-pointer opacity-0"
             type="file"
-            accept=".mp4"
+            accept=".mov"
             onChange={handleChangeInputFile}
           />
 
@@ -71,8 +84,8 @@ const Upload = () => {
 
         {file && (
           <motion.div variants={variants} initial="hidden" animate="enter" exit="exit">
-            <Button className="mt-2" type="primary" ghost onClick={() => navigate('/upload')}>
-              Upload
+            <Button className="mt-2" type="primary" ghost onClick={onFinish}>
+              {isLoading ? <LoadingOutlined /> : 'Upload'}
             </Button>
           </motion.div>
         )}

@@ -2,15 +2,15 @@ import Ffmpeg from 'fluent-ffmpeg'
 import internal, { Stream } from 'stream'
 
 type convertToHLSType = (
-  videoStream: string,
+  videoPath: string,
   id: string,
   videoBitrate: string,
   audioBitrate: string,
   resolution: string
 ) => Promise<Buffer>
 
-export const convertToHLS: convertToHLSType = async (
-  videoStream,
+export const convertToHLS: convertToHLSType = (
+  videoPath,
   id,
   videoBitrate,
   audioBitrate,
@@ -24,7 +24,7 @@ export const convertToHLS: convertToHLSType = async (
     let bufferStream = new Stream.PassThrough()
 
     const ffmpegProcess = Ffmpeg()
-      .input(videoStream)
+      .input(videoPath)
       .inputFormat('mov')
       .outputOptions([
         '-c:v h264',
@@ -33,20 +33,19 @@ export const convertToHLS: convertToHLSType = async (
         `-b:a ${audioBitrate}`,
         `-vf scale=${resolution}`,
         '-f hls',
-        '-hls_time 10',
-        '-hls_list_size 0',
+        '-hls_time 15',
+        '-hls_playlist_type vod',
         `-hls_segment_filename ${fileNamePrefix}_%03d.ts`,
+        '-segment_list_entry_prefix hls%2F',
         '-movflags',
-        'frag_keyframe+empty_moov'
+        'frag_keyframe+empty_moov',
+        '-force_key_frames expr:gte(t,n_forced*10)'
       ])
       .on('end', () => {
         resolve(bufferStream.read())
       })
       .on('error', (error, stdout, stderr) => {
-        console.log('HLS conversion error ==>', error)
-        console.log('ffmpeg output:\n' + stdout)
-        console.log('ffmpeg stderr:\n' + stderr)
-        reject(error)
+        reject(stderr)
       })
       .on('success', () => {
         console.log('HLS conversion completed ==>', resolution)
@@ -54,5 +53,18 @@ export const convertToHLS: convertToHLSType = async (
 
     ffmpegProcess.pipe(bufferStream, { end: false })
     ffmpegProcess.run()
+  })
+}
+
+export const generateThumbnail = (videoPath: string) => {
+  return new Promise((resolve, reject) => {
+    Ffmpeg()
+      .input(videoPath)
+      .inputFormat('mov')
+      .takeFrames(1)
+      .output('local.png')
+      .on('end', () => resolve(null))
+      .on('error', (error, stdout, stderr) => reject(stderr))
+      .run()
   })
 }

@@ -5,6 +5,21 @@ import Video from '~/models/Video.model'
 import { uploadVideo } from '~/utils/upload'
 
 /**
+ * @desc Get all videos
+ * @route GET /videos
+ * @access Public
+ */
+export const getVideos: RequestHandler = asyncHandler(async (req, res) => {
+  const videos = await Video.find().lean()
+
+  res.status(200).json({
+    message: 'Get all videos',
+    data: videos
+  })
+  return
+})
+
+/**
  * @desc Create new video
  * @route POST /videos
  * @access Private
@@ -18,10 +33,16 @@ export const createNewVideo: RequestHandler = asyncHandler(async (req, res) => {
   }
 
   try {
-    await uploadVideo(video)
+    const { videoUrl, thumbnailUrl } = await uploadVideo(video)
+
+    const newVideo = await Video.create({
+      videoUrl,
+      thumbnailUrl
+    })
 
     res.status(200).json({
-      message: 'Video uploaded'
+      message: 'Video uploaded',
+      data: newVideo
     })
     return
   } catch (error) {

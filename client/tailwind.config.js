@@ -4,10 +4,12 @@ export default {
   theme: {
     extend: {
       maxHeight: {
-        'upload-video': 'calc(75vh - 3.25rem)'
+        'upload-video': 'calc(75vh - 3.25rem)',
+        video: 'calc(100vh - 2rem)'
       },
       height: {
-        'upload-video': 'calc(75vh - 3.25rem)'
+        'upload-video': 'calc(75vh - 3.25rem)',
+        video: 'calc(100vh - 2rem)'
       }
     },
     colors: {

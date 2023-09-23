@@ -6,7 +6,6 @@ import { LogoutOutlined } from '@ant-design/icons'
 import useAuth from '~/hooks/useAuth'
 import { DefaultLayout } from '~/components'
 import { useSendLogoutMutation } from '../auth/store/authApiSlice'
-import ReactPlayer from 'react-player'
 
 const Welcome = () => {
   const navigate = useNavigate()
@@ -48,12 +47,6 @@ const Welcome = () => {
           </Button>
         </div>
       </div>
-
-      <ReactPlayer
-        controls
-        playing
-        url="https://firebasestorage.googleapis.com/v0/b/mern-starter-499b6.appspot.com/o/hls%2Ff433c9f0-5929-11ee-9caf-3b4bd6e7128c_master.m3u8?alt=media&token=e3730c06-1107-4f41-bb9f-8f8e811adfa8"
-      />
     </DefaultLayout>
   )
 }
