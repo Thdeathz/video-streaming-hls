@@ -24,6 +24,21 @@ body {
   background-color: #1677ff !important;
 }
 
+.plyr:-webkit-full-screen video {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.plyr:-moz-full-screen video {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.plyr:fullscreen video {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .flex-center {
   @apply flex items-center justify-center;
 }

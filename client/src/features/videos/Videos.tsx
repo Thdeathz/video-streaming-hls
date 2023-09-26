@@ -10,11 +10,7 @@ import { useNavigate } from 'react-router-dom'
 const Videos = () => {
   const navigate = useNavigate()
 
-  const { data: videos, isLoading } = useGetVideosQuery('videosList', {
-    pollingInterval: 10000,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true
-  })
+  const { data: videos, isLoading } = useGetVideosQuery('videosList')
 
   if (isLoading) return <Loading />
 

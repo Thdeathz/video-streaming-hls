@@ -1,7 +1,8 @@
 import React from 'react'
-import { useGetVideosQuery } from '../store/videosApiSlice'
 import { EntityId } from '@reduxjs/toolkit'
 import { useNavigate } from 'react-router-dom'
+
+import { useGetVideosQuery } from '../store/videosApiSlice'
 
 type VideoCardProps = {
   videoId: EntityId

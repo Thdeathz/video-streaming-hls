@@ -5,15 +5,16 @@ export default {
     extend: {
       maxHeight: {
         'upload-video': 'calc(75vh - 3.25rem)',
-        video: 'calc(100vh - 2rem)'
+        video: 'calc(80vh - 1rem)'
       },
       height: {
         'upload-video': 'calc(75vh - 3.25rem)',
-        video: 'calc(100vh - 2rem)'
+        video: 'calc(80vh - 1rem)'
       }
     },
     colors: {
       disable: 'rgba(0, 0, 0, 0.45)',
+      black: '#000000',
       'primary-1': '#E6F7FF',
       'primary-2': '#BAE7FF',
       'primary-3': '#91D5FF',

@@ -63,7 +63,7 @@ const Upload = () => {
           <input
             className="h-upload-video w-full cursor-pointer opacity-0"
             type="file"
-            accept=".mov"
+            accept=".mov,.mp4,.webm"
             onChange={handleChangeInputFile}
           />
 
