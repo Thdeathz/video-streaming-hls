@@ -29,6 +29,7 @@
     "@types/otp-generator": "^4.0.0",
     "@types/tmp": "^0.2.4",
     "@types/uuid": "^9.0.4",
+    "@types/workerpool": "^6.4.4",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.7",
@@ -58,6 +59,7 @@
     "nodemailer": "^6.9.5",
     "otp-generator": "^4.0.1",
     "tmp": "^0.2.1",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "workerpool": "^6.5.0"
   }
 }

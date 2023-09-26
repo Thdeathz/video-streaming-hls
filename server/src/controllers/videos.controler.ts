@@ -26,14 +26,15 @@ export const getVideos: RequestHandler = asyncHandler(async (req, res) => {
  */
 export const createNewVideo: RequestHandler = asyncHandler(async (req, res) => {
   const video = req.file?.buffer
+  const videoExtention = req.file?.originalname.split('.')[1]
 
-  if (!video) {
+  if (!video || !videoExtention) {
     res.status(400).json({ message: 'No video provided' })
     return
   }
 
   try {
-    const { videoUrl, thumbnailUrl } = await uploadVideo(video)
+    const { videoUrl, thumbnailUrl } = await uploadVideo(video, videoExtention)
 
     const newVideo = await Video.create({
       videoUrl,

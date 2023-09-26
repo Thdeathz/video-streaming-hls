@@ -1,9 +1,10 @@
 import Ffmpeg from 'fluent-ffmpeg'
-import internal, { Stream } from 'stream'
+import { Stream } from 'stream'
 
 type convertToHLSType = (
   videoPath: string,
-  id: string,
+  videoExtention: string,
+  fileNamePrefix: string,
   videoBitrate: string,
   audioBitrate: string,
   resolution: string
@@ -11,7 +12,8 @@ type convertToHLSType = (
 
 export const convertToHLS: convertToHLSType = (
   videoPath,
-  id,
+  videoExtention,
+  fileNamePrefix,
   videoBitrate,
   audioBitrate,
   resolution
@@ -19,13 +21,12 @@ export const convertToHLS: convertToHLSType = (
   return new Promise((resolve, reject) => {
     console.log('<---------------------------------------->')
     console.log('HLS conversion started ==>', resolution)
-    const fileNamePrefix = id + '_' + resolution
 
     let bufferStream = new Stream.PassThrough()
 
     const ffmpegProcess = Ffmpeg()
       .input(videoPath)
-      .inputFormat('mov')
+      .inputFormat(videoExtention)
       .outputOptions([
         '-c:v h264',
         `-b:v ${videoBitrate}`,
@@ -33,13 +34,12 @@ export const convertToHLS: convertToHLSType = (
         `-b:a ${audioBitrate}`,
         `-vf scale=${resolution}`,
         '-f hls',
-        '-hls_time 15',
+        '-hls_time 8',
         '-hls_playlist_type vod',
         `-hls_segment_filename ${fileNamePrefix}_%03d.ts`,
-        '-segment_list_entry_prefix hls%2F',
         '-movflags',
         'frag_keyframe+empty_moov',
-        '-force_key_frames expr:gte(t,n_forced*10)'
+        '-force_key_frames expr:gte(t,n_forced*8)'
       ])
       .on('end', () => {
         resolve(bufferStream.read())
@@ -56,13 +56,14 @@ export const convertToHLS: convertToHLSType = (
   })
 }
 
-export const generateThumbnail = (videoPath: string) => {
+export const generateThumbnail = (videoPath: string, outputPath: string) => {
   return new Promise((resolve, reject) => {
     Ffmpeg()
       .input(videoPath)
       .inputFormat('mov')
+      .seekInput('00:00:10')
       .takeFrames(1)
-      .output('local.png')
+      .output(outputPath)
       .on('end', () => resolve(null))
       .on('error', (error, stdout, stderr) => reject(stderr))
       .run()

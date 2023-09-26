@@ -1,4 +1,6 @@
-export const options = [
+import { videoResolutionOption } from '~/@types/video'
+
+export const options: videoResolutionOption[] = [
   {
     resolution: '320x180',
     videoBitrate: '500k',
