@@ -8,8 +8,7 @@ genkey:
 	node -e "console.log(require('crypto').randomBytes(128).toString('hex'))"
 
 devrun:
-	@docker exec -d $(COMPOSE_PROJECT_NAME)-server-1 yarn dev
-	@docker exec -it $(COMPOSE_PROJECT_NAME)-client-1 yarn dev
+	docker exec -it $(COMPOSE_PROJECT_NAME)-client-1 yarn dev
 
 devserver:
 	docker exec -it $(COMPOSE_PROJECT_NAME)-server-1 yarn dev

@@ -26,17 +26,10 @@ services:
     volumes:
       - data:/data/db
 
-  # ffmpeg:
-  #   image: jrottenberg/ffmpeg:4.1-alpine
-  #   tty: true
-  #   working_dir: /srv/ffmpeg
-  #   restart: unless-stopped
-
   server:
-    # image: node:18-alpine
     build:
       context: ./server
-      dockerfile: Dockerfile
+      dockerfile: ./dokcer/Dockerfile
     restart: unless-stopped
     working_dir: /srv/server
     tty: true

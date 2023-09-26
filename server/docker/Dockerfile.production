@@ -10,4 +10,9 @@ RUN yarn install --frozen-lockfile
 
 COPY . .
 
+EXPOSE 80
+
+RUN yarn build
+
+CMD ["yarn", "prod"]
 
